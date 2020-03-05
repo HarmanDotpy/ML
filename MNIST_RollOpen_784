@@ -1,0 +1,119 @@
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "colab": {
+      "name": "Untitled0.ipynb",
+      "provenance": [],
+      "collapsed_sections": [],
+      "authorship_tag": "ABX9TyO73z9OknLvRAu4Ru1c3Krw",
+      "include_colab_link": true
+    },
+    "kernelspec": {
+      "name": "python3",
+      "display_name": "Python 3"
+    }
+  },
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/Harman2607/ML_Scratch/blob/master/MNIST_RollOpen_784\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "er098GFxiSZJ",
+        "colab_type": "code",
+        "colab": {}
+      },
+      "source": [
+        "import matplotlib as mp"
+      ],
+      "execution_count": 0,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "X_b_KKXMa1cH",
+        "colab_type": "code",
+        "colab": {}
+      },
+      "source": [
+        "# MNIST DATASET CLASSIFICATION\n",
+        "import numpy as np\n",
+        "\n",
+        "from sklearn.datasets import fetch_openml\n",
+        "X, y= fetch_openml('mnist_784', version=1, return_X_y=True)\n"
+      ],
+      "execution_count": 0,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "2MgjbSeUfwI0",
+        "colab_type": "code",
+        "colab": {
+          "base_uri": "https://localhost:8080/",
+          "height": 282
+        },
+        "outputId": "aa60c0ff-e865-4848-c5cd-0a056c6c31a2"
+      },
+      "source": [
+        "# total 70000 pics \n",
+        "X=X/255\n",
+        "X_train, X_test = X[:60000], X[60000:]\n",
+        "y_train, y_test = y[:60000], y[60000:]\n",
+        "\n",
+        "# just for visualization\n",
+        "mp.pyplot.imshow(X[5].reshape(28,28))\n",
+        "print(y[5])"
+      ],
+      "execution_count": 16,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "text": [
+            "2\n"
+          ],
+          "name": "stdout"
+        },
+        {
+          "output_type": "display_data",
+          "data": {
+            "image/png": "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\n2IEg/h8CIWRCsmbzCQAAAABJRU5ErkJggg==\n",
+            "text/plain": [
+              "<Figure size 432x288 with 1 Axes>"
+            ]
+          },
+          "metadata": {
+            "tags": []
+          }
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "5s47sckDkCOy",
+        "colab_type": "code",
+        "colab": {}
+      },
+      "source": [
+        "# initialize plarameters and model structure\n",
+        "\n",
+        "# number of layers\n",
+        "L= 5\n"
+      ],
+      "execution_count": 0,
+      "outputs": []
+    }
+  ]
+}
