@@ -1,2 +1,2 @@
 # ML_Scratch
-some Ml/DL algo implemetnations from scratch
+Basic ML and DeepLearning algorithms from scratch
